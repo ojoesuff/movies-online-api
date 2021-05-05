@@ -25,6 +25,7 @@
   "dependencies": {
     "dotenv": "^8.5.1",
     "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
     "js-yaml": "^4.1.0",
     "mongoose": "^5.12.7",
     "swagger-ui-express": "^4.1.6",
