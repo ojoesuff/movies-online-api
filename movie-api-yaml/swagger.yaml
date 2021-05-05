@@ -1,0 +1,614 @@
+openapi: 3.0.0
+info:
+  title: MovieAPI
+  version: "1.0"
+servers:
+- url: https://virtserver.swaggerhub.com/eoin-hearne/MovieAPI/1.0
+  description: SwaggerHub API Auto Mocking
+paths:
+  /api/movies:
+    get:
+      tags:
+      - movies
+      summary: List Movies
+      description: List movies from movie db.
+      operationId: list-movies
+      responses:
+        "200":
+          description: List of Movies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieList'
+              examples:
+                objectExample:
+                  $ref: '#/components/examples/MovieList'
+        "401":
+          description: Unauthorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorised'
+        "404":
+          description: The specified resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        "5XX":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+  /api/genres:
+    get:
+      tags:
+      - movies
+      summary: List Genres
+      description: List genres from movie db.
+      operationId: list-genres
+      responses:
+        "200":
+          description: List of Genres
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Genres'
+              examples:
+                objectExample:
+                  $ref: '#/components/examples/Genres'
+        "401":
+          description: Unauthorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorised'
+        "404":
+          description: The specified resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        "5XX":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+  /api/wishlists:
+    get:
+      tags:
+      - wishlists
+      summary: List Wishlists
+      description: List of created wishlists
+      operationId: list-wishlists
+      responses:
+        "200":
+          description: List of Wishlists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wishlists'
+              examples:
+                objectExample:
+                  $ref: '#/components/examples/Wishlists'
+        "401":
+          description: Unauthorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorised'
+        "404":
+          description: The specified resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        "5XX":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+    post:
+      tags:
+      - wishlists
+      summary: Post a new wishlist
+      description: Create a new wishlist
+      operationId: post-wishlist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostWishlist'
+        required: true
+      responses:
+        "201":
+          description: Wishlist Review Added
+        "401":
+          description: Unauthorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorised'
+        "404":
+          description: The specified resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        "5XX":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+  /api/movies/{id}:
+    get:
+      tags:
+      - movies
+      summary: Get a movie
+      description: Get a movie using the Movie ID
+      operationId: get-a-movie
+      parameters:
+      - name: id
+        in: path
+        description: Unique ID of the movie
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Movie details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+              examples:
+                objectExample:
+                  $ref: '#/components/examples/Movie'
+        "401":
+          description: Unauthorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorised'
+        "404":
+          description: The specified resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        "5XX":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+  /api/movies/{id}/reviews:
+    get:
+      tags:
+      - movies
+      summary: Get a movie's reviews
+      description: Get a movie's reviews
+      operationId: get-movie-reviews
+      parameters:
+      - name: id
+        in: path
+        description: Unique ID of the movie to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Movie reviews
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieReviewList'
+              examples:
+                objectExample:
+                  $ref: '#/components/examples/MovieReviewList'
+        "401":
+          description: Unauthorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorised'
+        "404":
+          description: The specified resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        "5XX":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+    post:
+      tags:
+      - movies
+      summary: Post a movie reviews
+      description: Post a movie reviews
+      operationId: post-movie-reviews
+      parameters:
+      - name: id
+        in: path
+        description: Unique ID of the movie
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostMovieReview'
+        required: true
+      responses:
+        "201":
+          description: Movie Review Added
+        "401":
+          description: Unauthorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Unauthorised'
+        "404":
+          description: The specified resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        "5XX":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+components:
+  schemas:
+    NotFound:
+      type: object
+      properties:
+        status_message:
+          type: string
+          example: The resource you requested could not be found.
+        status_code:
+          type: integer
+          example: 404
+    Unauthorised:
+      type: object
+      properties:
+        status_message:
+          type: string
+          example: Unauthorised
+        status_code:
+          type: integer
+          example: 401
+    ServerError:
+      type: object
+      properties:
+        status_message:
+          type: string
+          example: Server error. Please try again later
+        status_code:
+          type: integer
+          example: 500
+    Movie:
+      type: object
+      properties:
+        poster_path:
+          title: image-path
+          type: string
+        adult:
+          type: boolean
+        overview:
+          type: string
+        release_date:
+          type: string
+        genre_ids:
+          type: array
+          items:
+            type: integer
+        id:
+          type: integer
+        original_title:
+          type: string
+        original_language:
+          type: string
+        title:
+          type: string
+        backdrop_path:
+          title: image-path
+          type: string
+        popularity:
+          type: number
+        vote_count:
+          type: integer
+        video:
+          type: boolean
+        vote_average:
+          type: number
+    MovieList:
+      type: object
+      properties:
+        page:
+          type: integer
+        total_pages:
+          type: integer
+        total_results:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Movie'
+    PostMovieReview:
+      type: object
+      properties:
+        author:
+          type: string
+        content:
+          type: string
+    MovieReviewList:
+      type: object
+      properties:
+        page:
+          type: integer
+        total_pages:
+          type: integer
+        total_results:
+          type: integer
+        results:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/PostMovieReview'
+            - type: object
+              properties:
+                id:
+                  type: string
+                created_at:
+                  type: string
+                updated_at:
+                  type: string
+    Genres:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    Wishlists:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    PostWishlist:
+      type: object
+      properties:
+        name:
+          type: string
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotFound'
+    Unauthorised:
+      description: Unauthorised
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Unauthorised'
+    ServerError:
+      description: Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ServerError'
+  examples:
+    Genres:
+      value:
+        id: 11
+        name: action
+    Wishlists:
+      value:
+        id: 2
+        name: Oscar Winners
+    Movie:
+      value:
+        adult: false
+        backdrop_path: /pcDc2WJAYGJTTvRSEIpRZwM3Ola.jpg
+        budget: 70000000
+        genres:
+        - id: 28
+          name: Action
+        - id: 12
+          name: Adventure
+        - id: 14
+          name: Fantasy
+        - id: 878
+          name: Science Fiction
+        homepage: https://www.hbomax.com/zacksnydersjusticeleague
+        id: 791373
+        imdb_id: tt12361974
+        original_language: en
+        original_title: Zack Snyder's Justice League
+        overview: "Determined to ensure Superman's ultimate sacrifice was not in vain,\
+          \ Bruce Wayne aligns forces with Diana Prince with plans to recruit a team\
+          \ of metahumans to protect the world from an approaching threat of catastrophic\
+          \ proportions."
+        popularity: 11783.352
+        poster_path: /tnAuB8q5vv7Ax9UAEje5Xi4BXik.jpg
+        production_companies:
+        - id: 174
+          logo_path: /ky0xOc5OrhzkZ1N6KyUxacfQsCk.png
+          name: Warner Bros. Pictures
+          origin_country: US
+        - id: 114152
+          name: The Stone Quarry
+          origin_country: US
+        - id: 507
+          logo_path: /z7H707qUWigbjHnJDMfj6QITEpb.png
+          name: Atlas Entertainment
+          origin_country: US
+        - id: 128064
+          logo_path: /13F3Jf7EFAcREU0xzZqJnVnyGXu.png
+          name: DC Films
+          origin_country: US
+        - id: 9993
+          logo_path: /2Tc1P3Ac8M479naPp1kYT3izLS5.png
+          name: DC Entertainment
+          origin_country: US
+        - id: 103376
+          name: Access Entertainment
+          origin_country: ""
+        - id: 444
+          logo_path: /42UPdZl6B2cFXgNUASR8hSt9mpS.png
+          name: Dune Entertainment
+          origin_country: US
+        production_countries:
+        - iso_3166_1: US
+          name: United States of America
+        release_date: 2021-03-18
+        revenue: 0
+        runtime: 242
+        spoken_languages:
+        - english_name: English
+          iso_639_1: en
+          name: English
+        status: Released
+        tagline: ""
+        title: Zack Snyder's Justice League
+        video: false
+        vote_average: 8.7
+        vote_count: 3437
+    MovieReviewList:
+      value:
+        id: 11
+        page: 1
+        results:
+        - author: Cat Ellington
+          content: "(As I'm writing this review, Darth Vader's theme music begins\
+            \ to build in my mind...)\U0001f60a"
+          created_at: 2017-02-13T22:23:01.268Z
+          id: 58a231c5925141179e000674
+          updated_at: 2017-02-13T23:16:19.538Z
+        - author: John Chard
+          content: "A long time ago in a childhood not too far away...\r\n\r\nPrincess\
+            \ Leia is captured and held hostage by the Imperial Army as it seeks to\
+            \ rule the Galactic Empire.. 10/10"
+          created_at: 2019-07-21T07:04:26.939Z
+          id: 5d340e7a2f8d090388d21ff2
+          updated_at: 2019-07-23T15:30:47.707Z
+        - author: gastyny
+          content: "Star Wars (1977) is a true masterpiece of cinema, and is \r\n\
+            \  definitely one of the best films ever made.My grade for it is 10\\\
+            10."
+          created_at: 2020-04-13T22:40:05.539Z
+          id: 5e94ea4566565a0014baa6c5
+          updated_at: 2020-04-14T21:30:50.409Z
+        total_pages: 1
+        total_results: 3
+    MovieList:
+      value:
+        page: 1
+        results:
+        - adult: false
+          backdrop_path: /pcDc2WJAYGJTTvRSEIpRZwM3Ola.jpg
+          genre_ids:
+          - 28
+          - 12
+          - 14
+          - 878
+          id: 791373
+          original_language: en
+          original_title: Zack Snyder's Justice League
+          overview: "Determined to ensure Superman's ultimate sacrifice was not in\
+            \ vain, Bruce Wayne aligns forces with Diana Prince with plans to recruit\
+            \ a team of metahumans to protect the world from an approaching threat\
+            \ of catastrophic proportions."
+          popularity: 11783.352
+          poster_path: /tnAuB8q5vv7Ax9UAEje5Xi4BXik.jpg
+          release_date: 2021-03-18
+          title: Zack Snyder's Justice League
+          video: false
+          vote_average: 8.7
+          vote_count: 3389
+        - adult: false
+          backdrop_path: /hJuDvwzS0SPlsE6MNFOpznQltDZ.jpg
+          genre_ids:
+          - 16
+          - 12
+          - 14
+          - 10751
+          - 28
+          id: 527774
+          original_language: en
+          original_title: Raya and the Last Dragon
+          overview: "Long ago, in the fantasy world of Kumandra, humans and dragons\
+            \ lived together in harmony. But when an evil force threatened the land,\
+            \ the dragons sacrificed themselves to save humanity. Now, 500 years later,\
+            \ that same evil has returned and it’s up to a lone warrior, Raya, to\
+            \ track down the legendary last dragon to restore the fractured land and\
+            \ its divided people."
+          popularity: 3067.315
+          poster_path: /lPsD10PP4rgUGiGR4CCXA6iY0QQ.jpg
+          release_date: 2021-03-03
+          title: Raya and the Last Dragon
+          video: false
+          vote_average: 8.4
+          vote_count: 1613
+        - adult: false
+          backdrop_path: /drulhSX7P5TQlEMQZ3JoXKSDEfz.jpg
+          genre_ids:
+          - 18
+          - 14
+          - 878
+          id: 581389
+          original_language: ko
+          original_title: 승리호
+          overview: "When the crew of a space junk collector ship called The Victory\
+            \ discovers a humanoid robot named Dorothy that's known to be a weapon\
+            \ of mass destruction, they get involved in a risky business deal which\
+            \ puts their lives at stake."
+          popularity: 3507.528
+          poster_path: /lykPQ7lgrLJPwLlSyetVXsl2wDf.jpg
+          release_date: 2021-02-05
+          title: Space Sweepers
+          video: false
+          vote_average: 7.2
+          vote_count: 416
+        - adult: false
+          backdrop_path: /gzJnMEMkHowkUndn9gCr8ghQPzN.jpg
+          genre_ids:
+          - 53
+          - 28
+          - 18
+          id: 793723
+          original_language: fr
+          original_title: Sentinelle
+          overview: "Transferred home after a traumatizing combat mission, a highly\
+            \ trained French soldier uses her lethal skills to hunt down the man who\
+            \ hurt her sister."
+          popularity: 2266.597
+          poster_path: /fFRq98cW9lTo6di2o4lK1qUAWaN.jpg
+          release_date: 2021-03-05
+          title: Sentinelle
+          video: false
+          vote_average: 6
+          vote_count: 264
+        total_pages: 500
+        total_results: 10000
