@@ -5,7 +5,7 @@ import { NotFound } from './../../responses/index.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', asyncHandler(async (req, res) => {
 
     let { page = 1, limit = 4 } = req.query; // destructure page and limit and set default values
     [page, limit] = [+page, +limit]; //trick to convert to numeric (req.query will contain string values)
@@ -19,10 +19,10 @@ router.get('/', async (req, res) => {
     const returnObject = { page: page, total_pages: Math.ceil(totalDocuments / limit), total_results: totalDocuments, results: movies };//construct return Object and insert into response object
 
     res.status(200).json(returnObject);
-});
+}));
 
 // Get movie details
-router.get('/:id', async (req, res) => {
+router.get('/:id', asyncHandler(async (req, res) => {
     const id = req.params.id;
     const movie = await movieModel.findById(id).exec();
     if (movie) {
@@ -30,10 +30,10 @@ router.get('/:id', async (req, res) => {
     } else {
         res.status(404).json(NotFound);
     }
-});
+}));
 
 // Get movie reviews
-router.get('/:id/reviews', async (req, res) => {
+router.get('/:id/reviews', asyncHandler(async (req, res) => {
     const id = req.params.id;
     const movie = await movieModel.findById(id).exec();
     if (movie.reviews) {
@@ -41,6 +41,6 @@ router.get('/:id/reviews', async (req, res) => {
     } else {
         res.status(404).json(NotFound);
     }
-});
+}));
 
 export default router;

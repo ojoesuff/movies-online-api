@@ -12,3 +12,8 @@ export const ServerError = {
     status_message: "Server error, please try again later.",
     status_code: 500
 };
+
+export const CreatedResource = {
+    status_message: "Sucessfully Created Resource",
+    status_code: 201
+};

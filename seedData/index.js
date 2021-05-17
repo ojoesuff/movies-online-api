@@ -9,9 +9,8 @@ import { genres } from './genres.js';
 // deletes all user documents in collection and inserts test data
 async function loadUsers() {
   try {
-
-    await userModel.deleteMany();
-    await userModel.collection.insertMany(users);
+    await userModel.collection.drop();
+    users.forEach(user =>  userModel.create(user));
     console.info(`${users.length} users were successfully stored.`);
   } catch (err) {
     console.error(`failed to Load user Data: ${err}`);
