@@ -56,6 +56,14 @@ export const movies = [
     ],
     "release_date": "2021-03-03",
     "revenue": 56482606,
+    "reviews": [
+        {
+            "author": "Eoin Hearne",
+            "content": "Best movie ever!!",
+            "created_at": new Date(),
+            "updated_at": new Date()
+        }
+    ],
     "runtime": 107,
     "spoken_languages": [
         {

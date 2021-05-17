@@ -7,6 +7,7 @@ import fs from 'fs';
 import './db/index.js';
 import './seedData/index.js';
 import usersRouter from './api/users/index.js';
+import genresRouter from './api/genres/index.js';
 
 dotenv.config();
 
@@ -22,6 +23,9 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //Users router
 app.use('/api/users', usersRouter);
+
+//Genres router
+app.use('/api/genres', genresRouter);
 
 app.listen(port, () => {
   console.info(`Server running at ${port}`);

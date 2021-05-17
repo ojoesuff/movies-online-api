@@ -32,4 +32,15 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// Get movie reviews
+router.get('/:id/reviews', async (req, res) => {
+    const id = req.params.id;
+    const movie = await movieModel.findById(id).exec();
+    if (movie.reviews) {
+        res.status(200).json(movie.reviews);
+    } else {
+        res.status(404).json(NotFound);
+    }
+});
+
 export default router;
