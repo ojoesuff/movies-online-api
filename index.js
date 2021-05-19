@@ -20,7 +20,9 @@ app.use(passport.initialize());
 
 app.use(express.json());
 
-app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
+// app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
+
+app.use('/api/movies', moviesRouter);
 
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

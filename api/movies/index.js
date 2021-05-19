@@ -1,5 +1,7 @@
 import express from 'express';
 import movieModel from './movieModel.js';
+import upcomingMovieModel from './upcomingMovieModel.js'
+import topRatedMovieModel from './topRatedMovieModel.js'
 import asyncHandler from 'express-async-handler';
 import { NotFound } from './../../responses/index.js';
 
@@ -7,17 +9,31 @@ const router = express.Router();
 
 router.get('/', asyncHandler(async (req, res) => {
 
-    let { page = 1, limit = 4 } = req.query; // destructure page and limit and set default values
-    [page, limit] = [+page, +limit]; //trick to convert to numeric (req.query will contain string values)
+    // let { page = 1, limit = 4 } = req.query; // destructure page and limit and set default values
+    // [page, limit] = [+page, +limit]; //trick to convert to numeric (req.query will contain string values)
 
-    const totalDocumentsPromise = movieModel.estimatedDocumentCount(); //Kick off async calls
-    const moviesPromise = movieModel.find().limit(limit).skip((page - 1) * limit);
+    // const totalDocumentsPromise = movieModel.estimatedDocumentCount(); //Kick off async calls
+    const moviesPromise = movieModel.find();
 
-    const totalDocuments = await totalDocumentsPromise; //wait for the above promises to be fulfilled
+    // const totalDocuments = await totalDocumentsPromise; //wait for the above promises to be fulfilled
     const movies = await moviesPromise;
 
-    const returnObject = { page: page, total_pages: Math.ceil(totalDocuments / limit), total_results: totalDocuments, results: movies };//construct return Object and insert into response object
+    const returnObject = { results: movies };//construct return Object and insert into response object
 
+    res.status(200).json(returnObject);
+}));
+
+router.get('/upcoming', asyncHandler(async (req, res) => {
+    const moviesPromise = upcomingMovieModel.find();
+    const movies = await moviesPromise;
+    const returnObject = { results: movies }
+    res.status(200).json(returnObject);
+}));
+
+router.get('/top-rated', asyncHandler(async (req, res) => {
+    const moviesPromise = topRatedMovieModel.find();
+    const movies = await moviesPromise;
+    const returnObject = { results: movies }
     res.status(200).json(returnObject);
 }));
 

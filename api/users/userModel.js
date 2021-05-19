@@ -3,11 +3,18 @@ import bcrypt from 'bcrypt';
 
 const Schema = mongoose.Schema;
 
+const WishlistSchema = new Schema({
+  name: {type: String, required: true },
+  movies: [{type: mongoose.Schema.Types.ObjectId,
+    ref: 'Movie'}]
+})
+
 const UserSchema = new Schema({
   username: { type: String, unique: true, required: true},
   password: {type: String, required: true },
   favourites: [{type: mongoose.Schema.Types.ObjectId,
-              ref: 'Movie'}]
+              ref: 'Movie'}],
+  wishlists: [WishlistSchema]
 });
 
 UserSchema.pre('save', function (next) {
