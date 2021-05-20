@@ -45,6 +45,16 @@ UserSchema.methods.addFavourite = function(movieId) {
   return this.save();
 };
 
+UserSchema.methods.addWishlist = function(wishlist) {
+  this.wishlists.push(wishlist);
+  return this.save();
+};
+
+UserSchema.methods.deleteWishlist = function(wishlist) {
+  this.wishlists.remove(wishlist);
+  return this.save();
+};
+
 UserSchema.methods.comparePassword = function (passw, callback) {
   bcrypt.compare(passw, this.password, (err, isMatch) => {
     if (err) {

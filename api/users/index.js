@@ -85,5 +85,53 @@ router.get('/:userName/favourites', asyncHandler(async (req, res, next) => {
         res.status(404).json(NotFound);
 }));
 
+// get users wishlists
+router.get('/:userName/wishlists', asyncHandler(async (req, res, next) => {
+    const userName = req.params.userName;
+    const user = await User.findByUserName(userName).populate('wishlists.movies')
+    if (user)
+        res.status(201).json(user.wishlists);
+    else
+        res.status(404).json(NotFound);
+}));
+
+// add wishlist for user
+router.post('/:userName/wishlists', asyncHandler(async (req, res) => {
+    const newWishlist = req.body?.wishlist;
+    const userName = req.params.userName;
+    if (newWishlist && newWishlist.name) {
+        const user = await User.findByUserName(userName);
+        if (user) {
+            await user.addWishlist(newWishlist);
+            res.status(201).json(user.wishlists);
+        }
+        else {
+            res.status(404).json(NotFound);
+        }
+    }
+    else {
+        res.status(422).json({ status_code: 422, message: "unable to process body of request" });
+    }
+}));
+
+// delete wishlist for user
+router.delete('/:userName/wishlists', asyncHandler(async (req, res) => {
+    const wishlist = req.body?.wishlist;
+    const userName = req.params.userName;
+    if (wishlist && wishlist._id) {
+        const user = await User.findByUserName(userName);
+        if (user) {
+            await user.deleteWishlist(wishlist);
+            res.status(201).json(user.wishlists);
+        }
+        else {
+            res.status(404).json(NotFound);
+        }
+    }
+    else {
+        res.status(422).json({ status_code: 422, message: "unable to process body of request" });
+    }
+}));
+
 
 export default router;
