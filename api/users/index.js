@@ -133,5 +133,25 @@ router.delete('/:userName/wishlists', asyncHandler(async (req, res) => {
     }
 }));
 
+// add movie to wishlist
+router.post('/:userName/wishlists/:wishlistId/', asyncHandler(async (req, res) => {
+    const movieId = req.body.movieId
+    const wishlistId = req.params.wishlistId
+    const userName = req.params.userName;
+    if (movieId) {
+        const user = await User.findByUserName(userName);
+        if (user) {
+            await user.addMovieToWishlist(wishlistId, movieId);
+            res.status(201).json(user.wishlists);
+        }
+        else {
+            res.status(404).json(NotFound);
+        }
+    }
+    else {
+        res.status(422).json({ status_code: 422, message: "unable to process body of request" });
+    }
+}));
+
 
 export default router;

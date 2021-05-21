@@ -50,6 +50,14 @@ UserSchema.methods.addWishlist = function(wishlist) {
   return this.save();
 };
 
+UserSchema.methods.addMovieToWishlist = function(wishlistId, movieId) {
+  // const wishlist = this.wishlists.find(w => w._id = wishlistId)
+  // this.wishlists.push({name: `${wishlist.name}`, movies:[]})
+  if(this.wishlists.find(w => w._id = wishlistId)?.movies?.indexOf(movieId) === -1)
+    this.wishlists.find(w => w._id = wishlistId)?.movies?.push(movieId)
+  return this.save();
+};
+
 UserSchema.methods.deleteWishlist = function(wishlist) {
   this.wishlists.remove(wishlist);
   return this.save();
