@@ -51,8 +51,8 @@ UserSchema.methods.addWishlist = function(wishlist) {
 };
 
 UserSchema.methods.addMovieToWishlist = function(wishlistId, movieId) {
-  if(this.wishlists.find(w => w._id = wishlistId)?.movies?.indexOf(movieId) === -1)
-    this.wishlists.find(w => w._id = wishlistId)?.movies?.push(movieId)
+  if(this.wishlists.find(w => w._id == wishlistId)?.movies?.indexOf(movieId) === -1)
+    this.wishlists.find(w => w._id == wishlistId)?.movies?.push(movieId)
   return this.save();
 };
 
