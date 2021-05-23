@@ -55,17 +55,31 @@ router.put('/:id', asyncHandler(async (req, res) => {
 router.post('/:userName/favourites', asyncHandler(async (req, res) => {
     const newFavourite = req.body;
     const userName = req.params.userName;
-    if (newFavourite && newFavourite.id) {
-        //kick off both async calls at the same time
-        const moviePromise = Movie.findById(newFavourite.id);
-        const userPromise = User.findByUserName(userName);
-        //wait for both promises to return before continuing
-        const movie = await moviePromise;
-        const user = await userPromise;
+    if (newFavourite.movieId) {
+        const user = await User.findByUserName(userName)
         //This wont execute until both the above promises are fulfilled.
-        if (movie && user) {
-            await user.addFavourite(movie._id);
-            res.status(201).json(user);
+        if (user) {
+            await user.addFavourite(newFavourite.movieId);
+            const updatedUser = await User.findByUserName(userName).populate("favourites")
+            res.status(201).json(updatedUser.favourites);
+        }
+        else {
+            res.status(404).json(NotFound);
+        }
+    }
+    else {
+        res.status(422).json({ status_code: 422, message: "unable to process body of request" });
+    }
+}));
+
+router.delete('/:userName/favourites', asyncHandler(async (req, res) => {
+    const favourite = req.body;
+    const userName = req.params.userName;
+    if (favourite.movieId) {
+        const user = await User.findByUserName(userName);
+        if (user) {
+            await user.removeFavourite(favourite.movieId);
+            res.status(201).json(user.favourites);
         }
         else {
             res.status(404).json(NotFound);

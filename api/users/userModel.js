@@ -41,7 +41,14 @@ UserSchema.statics.findByUserName = function(username) {
 
 // add a favourite movie.
 UserSchema.methods.addFavourite = function(movieId) {
-  this.favourites.push(movieId);
+  if(!this.favourites.find(fav => fav == movieId))
+    this.favourites.push(movieId);
+  return this.save();
+};
+
+// remove favourite movie.
+UserSchema.methods.removeFavourite = function(movieId) {
+  this.favourites.remove(movieId);
   return this.save();
 };
 
