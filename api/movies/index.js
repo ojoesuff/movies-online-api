@@ -59,4 +59,17 @@ router.get('/:id/reviews', asyncHandler(async (req, res) => {
     }
 }));
 
+// Add movie review
+router.post('/:id/reviews', asyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const movie = await movieModel.findById(id).exec();
+    const review = req.body
+    if (review && movie) {
+        await movie.addReview(review);
+        res.status(200).json(movie.reviews);
+    } else {
+        res.status(404).json(NotFound);
+    }
+}));
+
 export default router;

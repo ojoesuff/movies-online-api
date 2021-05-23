@@ -45,3 +45,9 @@ export const BasicMovieSchema = new Schema({
   status: { type: String },
   tagline: { type: String }
 });
+
+// add movie review
+BasicMovieSchema.methods.addReview = function(review) {
+  this.reviews.push(review);
+  return this.save();
+};
