@@ -64,7 +64,7 @@ UserSchema.methods.addMovieToWishlist = function(wishlistId, movieId) {
 };
 
 UserSchema.methods.removeMovieFromWishlist = function(wishlistId, movieId) {
-  this.wishlists.find(w => w._id = wishlistId)?.movies?.remove(movieId)
+  this.wishlists.find(w => w._id == wishlistId)?.movies?.remove(movieId)
   return this.save();
 };
 

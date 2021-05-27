@@ -79,7 +79,8 @@ router.delete('/:userName/favourites', asyncHandler(async (req, res) => {
         const user = await User.findByUserName(userName);
         if (user) {
             await user.removeFavourite(favourite.movieId);
-            res.status(201).json(user.favourites);
+            const updatedUser = await User.findByUserName(userName).populate("favourites")
+            res.status(201).json(updatedUser.favourites);
         }
         else {
             res.status(404).json(NotFound);
@@ -114,7 +115,7 @@ router.post('/:userName/wishlists', asyncHandler(async (req, res) => {
     const newWishlist = req.body?.wishlist;
     const userName = req.params.userName;
     if (newWishlist && newWishlist.name) {
-        const user = await User.findByUserName(userName);
+        const user = await User.findByUserName(userName).populate('wishlists.movies');
         if (user) {
             await user.addWishlist(newWishlist);
             res.status(201).json(user.wishlists);
@@ -133,7 +134,7 @@ router.delete('/:userName/wishlists', asyncHandler(async (req, res) => {
     const wishlist = req.body?.wishlist;
     const userName = req.params.userName;
     if (wishlist && wishlist._id) {
-        const user = await User.findByUserName(userName);
+        const user = await User.findByUserName(userName).populate('wishlists.movies');
         if (user) {
             await user.deleteWishlist(wishlist);
             res.status(201).json(user.wishlists);
@@ -153,10 +154,11 @@ router.post('/:userName/wishlists/:wishlistId/', asyncHandler(async (req, res) =
     const wishlistId = req.params.wishlistId
     const userName = req.params.userName;
     if (movieId) {
-        const user = await User.findByUserName(userName);
+        const user = await User.findByUserName(userName)
         if (user) {
             await user.addMovieToWishlist(wishlistId, movieId);
-            res.status(201).json(user.wishlists);
+            const newUser = await User.findByUserName(userName).populate('wishlists.movies');
+            res.status(201).json(newUser.wishlists);
         }
         else {
             res.status(404).json(NotFound);
@@ -173,7 +175,7 @@ router.delete('/:userName/wishlists/:wishlistId/', asyncHandler(async (req, res)
     const wishlistId = req.params.wishlistId
     const userName = req.params.userName;
     if (movieId) {
-        const user = await User.findByUserName(userName);
+        const user = await User.findByUserName(userName).populate('wishlists.movies');
         if (user) {
             await user.removeMovieFromWishlist(wishlistId, movieId);
             res.status(201).json(user.wishlists);
