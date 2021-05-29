@@ -37,13 +37,28 @@ router.post('/', asyncHandler(async (req, res) => {
                 res.status(200).json({
                     message: "Success",
                     status_code: 200,
-                    token: 'BEARER ' + token,
+                    token: token,
                 });
             } else {
                 res.status(401).send(Unauthorised);
             }
         });
 
+    }
+}));
+
+// Get user
+router.get('/:token', asyncHandler(async (req, res) => {
+    const token = req.params.token
+    if(token) {
+        const user = jwt.verify(token, process.env.secret);  
+        if (user)
+            res.json(200, {username: user});
+        else
+            res.json(404, NotFound);
+    } 
+    else {
+        res.json(401, Unauthorised);
     }
 }));
 
