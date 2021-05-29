@@ -48,6 +48,229 @@ paths:
             $ref: '#/components/responses/NotFound'
           '5XX':
             $ref: '#/components/responses/ServerError'
+  /api/users/{userName}/favourites:
+    get:
+      operationId: list-users-favourites
+      summary: List Users Favourite Movies
+      description: List of users favourite movies
+      tags:
+        - users
+      parameters:
+        - in: path
+          name: userName
+          schema:
+            type: string
+          required: true
+          description: Unique name of user
+      responses:
+        '200':
+          description: 'List of users favourite movies'
+          content: 
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/UserFavouritesList'
+              examples: 
+                objectExample:
+                  $ref: '#/components/examples/UserFavouritesList'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/ServerError'
+    post:
+        operationId: post-user-favourite
+        summary: Post a users favourite movie
+        description: Add a movie to users favourites
+        tags:
+            - users
+        parameters:
+        - in: path
+          name: userName
+          schema:
+            type: string
+          required: true
+          description: Unique name of user
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserFavouritesList'
+        responses:
+          '201':
+            description: 'Favourite Successfully Added'
+          '401':
+            $ref: '#/components/responses/Unauthorised'
+          '404':
+            $ref: '#/components/responses/NotFound'
+          '5XX':
+            $ref: '#/components/responses/ServerError'
+    delete:
+        operationId: delete-user-favourite
+        summary: Delete a users favourite movie
+        description: Remove a movie from users favourites
+        tags:
+            - users
+        parameters:
+        - in: path
+          name: userName
+          schema:
+            type: string
+          required: true
+          description: Unique name of user
+        responses:
+          '201':
+            description: 'Favourite Successfully Removed'
+          '401':
+            $ref: '#/components/responses/Unauthorised'
+          '404':
+            $ref: '#/components/responses/NotFound'
+          '5XX':
+            $ref: '#/components/responses/ServerError'
+  /api/users/{userName}/wishlists:
+    get:
+      operationId: list-users-wishlists
+      summary: List Users Wishlists
+      description: List of users wishlists
+      tags:
+        - users
+      parameters:
+        - in: path
+          name: userName
+          schema:
+            type: string
+          required: true
+          description: Unique name of user
+      responses:
+        '200':
+          description: 'List of users wishlist'
+          content: 
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/UserWishlists'
+              examples: 
+                objectExample:
+                  $ref: '#/components/examples/UserWishlists'
+        '401':
+          $ref: '#/components/responses/Unauthorised'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '5XX':
+          $ref: '#/components/responses/ServerError'
+    post:
+        operationId: post-user-wishlist
+        summary: Post a users wishlist
+        description: Add a users new wishlist
+        tags:
+            - users
+        parameters:
+        - in: path
+          name: userName
+          schema:
+            type: string
+          required: true
+          description: Unique name of user
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserWishlists'
+        responses:
+          '201':
+            description: 'Wishlist Successfully Added'
+          '401':
+            $ref: '#/components/responses/Unauthorised'
+          '404':
+            $ref: '#/components/responses/NotFound'
+          '5XX':
+            $ref: '#/components/responses/ServerError'
+    delete:
+        operationId: delete-user-wishlist
+        summary: Delete a users wishlist
+        description: Delete a users wishlist
+        tags:
+            - users
+        parameters:
+        - in: path
+          name: userName
+          schema:
+            type: string
+          required: true
+          description: Unique name of user
+        responses:
+          '201':
+            description: 'Wishlist Successfully Deleted'
+          '401':
+            $ref: '#/components/responses/Unauthorised'
+          '404':
+            $ref: '#/components/responses/NotFound'
+          '5XX':
+            $ref: '#/components/responses/ServerError'
+  /api/users/{userName}/wishlists/{wishlistId}:
+    post:
+        operationId: post-wishlist-movie
+        summary: Post a movie to users wishlist
+        description: Add a movie to wishlist
+        tags:
+            - users
+        parameters:
+        - in: path
+          name: userName
+          schema:
+            type: string
+          required: true
+          description: Unique name of user
+        - in: path
+          name: wishlistId
+          schema:
+            type: integer
+          required: true
+          description: Unique id of wishlist
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        responses:
+          '201':
+            description: 'Movie Successfully Added to Wishlist'
+          '401':
+            $ref: '#/components/responses/Unauthorised'
+          '404':
+            $ref: '#/components/responses/NotFound'
+          '5XX':
+            $ref: '#/components/responses/ServerError'
+    delete:
+        operationId: delete-wishlist-movie
+        summary: Delete a movie from wishlist
+        description: Delete a movie from wishlist
+        tags:
+            - users
+        parameters:
+        - in: path
+          name: userName
+          schema:
+            type: string
+          required: true
+          description: Unique name of user
+        - in: path
+          name: wishlistId
+          schema:
+            type: integer
+          required: true
+          description: Unique id of wishlist
+        responses:
+          '201':
+            description: 'Movie Successfully Deleted'
+          '401':
+            $ref: '#/components/responses/Unauthorised'
+          '404':
+            $ref: '#/components/responses/NotFound'
+          '5XX':
+            $ref: '#/components/responses/ServerError'
   /api/movies:
     get:
       operationId: list-movies
@@ -123,7 +346,7 @@ paths:
       summary: List Genres
       description: List genres from movie db.
       tags:
-        - movies
+        - genres
       responses:
         '200':
           description: 'List of Genres'
@@ -140,50 +363,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '5XX':
           $ref: '#/components/responses/ServerError'
-  /api/wishlists:
-    get:
-      operationId: list-wishlists
-      summary: List Wishlists
-      description: List of created wishlists
-      tags:
-        - wishlists
-      responses:
-        '200':
-          description: 'List of Wishlists'
-          content: 
-            application/json:
-              schema:
-                 $ref: '#/components/schemas/Wishlists'
-              examples: 
-                objectExample:
-                  $ref: '#/components/examples/Wishlists'
-        '401':
-          $ref: '#/components/responses/Unauthorised'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '5XX':
-          $ref: '#/components/responses/ServerError'
-    post:
-        operationId: post-wishlist
-        summary: Post a new wishlist
-        description: Create a new wishlist
-        tags:
-            - wishlists
-        requestBody:
-          required: true
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PostWishlist'
-        responses:
-          '201':
-            description: 'Wishlist Review Added'
-          '401':
-            $ref: '#/components/responses/Unauthorised'
-          '404':
-            $ref: '#/components/responses/NotFound'
-          '5XX':
-            $ref: '#/components/responses/ServerError'
   /api/movies/{id}:
     get:
       operationId: get-a-movie
@@ -217,8 +396,8 @@ paths:
   /api/movies/{id}/reviews:
       get:
         operationId: get-movie-reviews
-        summary: Get a movie's reviews
-        description: Get a movie's reviews
+        summary: Get a movies reviews
+        description: Get a movies reviews
         tags:
             - movies
         parameters:
@@ -401,22 +580,29 @@ components:
           type: string
         password:
           type: string
+    UserFavouritesList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Movie'
     UserList:
       type: array
       items:
         $ref: '#/components/schemas/User'
-    Wishlists:
+    Wishlist:
       type: object
       properties:
         id:
           type: integer
         name:
           type: string
-    PostWishlist:
-      type: object
-      properties:
-        name:
-          type: string
+        movies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Movie'
+    UserWishlists:
+      type: array
+      items:
+        $ref: '#/components/schemas/Wishlist'
   responses:
     NotFound:
       description: The specified resource was not found
@@ -459,6 +645,181 @@ components:
             id: "kjcdas78cdcubiasc",
             username: "user2",
             password: "password2"
+          }
+        ]
+    UserFavouritesList:
+      value: 
+        [
+          {
+        "adult": false,
+        "backdrop_path": "/fPGeS6jgdLovQAKunNHX8l0avCy.jpg",
+        "genre_ids": [
+            28,
+            12,
+            53,
+            10752
+        ],
+        "id": 567189,
+        "original_language": "en",
+        "original_title": "Tom Clancy's Without Remorse",
+        "overview": "An elite Navy SEAL uncovers an international conspiracy while seeking justice for the murder of his pregnant wife.",
+        "popularity": 2983.338,
+        "poster_path": "/rEm96ib0sPiZBADNKBHKBv5bve9.jpg",
+        "release_date": "2021-04-29",
+        "title": "Tom Clancy's Without Remorse",
+        "video": false,
+        "vote_average": 7.3,
+        "vote_count": 895
+    },
+    {
+        "adult": false,
+        "backdrop_path": "/6ELCZlTA5lGUops70hKdB83WJxH.jpg",
+        "genre_ids": [
+            28,
+            14,
+            12
+        ],
+        "id": 460465,
+        "original_language": "en",
+        "original_title": "Mortal Kombat",
+        "overview": "Washed-up MMA fighter Cole Young, unaware of his heritage, and hunted by Emperor Shang Tsung's best warrior, Sub-Zero, seeks out and trains with Earth's greatest champions as he prepares to stand against the enemies of Outworld in a high stakes battle for the universe.",
+        "popularity": 2612.747,
+        "poster_path": "/nkayOAUBUu4mMvyNf9iHSUiPjF1.jpg",
+        "release_date": "2021-04-07",
+        "title": "Mortal Kombat",
+        "video": false,
+        "vote_average": 7.6,
+        "vote_count": 2497
+    },
+    {
+        "adult": false,
+        "backdrop_path": "/inJjDhCjfhh3RtrJWBmmDqeuSYC.jpg",
+        "genre_ids": [
+            878,
+            28,
+            18
+        ],
+        "id": 399566,
+        "original_language": "en",
+        "original_title": "Godzilla vs. Kong",
+        "overview": "In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages.",
+        "popularity": 1775.66,
+        "poster_path": "/pgqgaUx1cJb5oZQQ5v0tNARCeBp.jpg",
+        "release_date": "2021-03-24",
+        "title": "Godzilla vs. Kong",
+        "video": false,
+        "vote_average": 8.1,
+        "vote_count": 5525
+    }
+        
+        ]
+    UserWishlists:
+      value: [
+          {
+            id: 289378,
+            name: "Best movies of 2020",
+            movies: [
+              {
+        "adult": false,
+        "backdrop_path": "/6zbKgwgaaCyyBXE4Sun4oWQfQmi.jpg",
+        "genre_ids": [
+            28,
+            53,
+            80,
+            35
+        ],
+        "id": 615457,
+        "original_language": "en",
+        "original_title": "Nobody",
+        "overview": "Hutch Mansell, a suburban dad, overlooked husband, nothing neighbor — a \"nobody.\" When two thieves break into his home one night, Hutch's unknown long-simmering rage is ignited and propels him on a brutal path that will uncover dark secrets he fought to leave behind.",
+        "popularity": 1388.757,
+        "poster_path": "/oBgWY00bEFeZ9N25wWVyuQddbAo.jpg",
+        "release_date": "2021-03-26",
+        "title": "Nobody",
+        "video": false,
+        "vote_average": 8.4,
+        "vote_count": 1509
+    },
+    {
+        "adult": false,
+        "backdrop_path": "/n2y7T8wJVjJ8yLhQXQgNCpsC3ga.jpg",
+        "genre_ids": [
+            10751,
+            16,
+            35
+        ],
+        "id": 811367,
+        "original_language": "en",
+        "original_title": "22 vs. Earth",
+        "overview": "Set before the events of ‘Soul’, 22 refuses to go to Earth, enlisting a gang of 5 new souls in attempt of rebellion. However, 22’s subversive plot leads to a surprising revelation about the meaning of life.",
+        "popularity": 1229.817,
+        "poster_path": "/32vLDKSzcCMh55zqqaSqqUA8naz.jpg",
+        "release_date": "2021-04-30",
+        "title": "22 vs. Earth",
+        "video": false,
+        "vote_average": 7.2,
+        "vote_count": 74
+    },
+    {
+        "adult": false,
+        "backdrop_path": "/c7dFSqZQYqNNJVpacpIGZe3gkLW.jpg",
+        "genre_ids": [
+            16,
+            35,
+            14
+        ],
+        "id": 813258,
+        "original_language": "en",
+        "original_title": "Monster Pets: A Hotel Transylvania Short",
+        "overview": "Drac tries out some new monster pets to help occupy Tinkles for playtime.",
+        "popularity": 1162.607,
+        "poster_path": "/dkokENeY5Ka30BFgWAqk14mbnGs.jpg",
+        "release_date": "2021-04-02",
+        "title": "Monster Pets: A Hotel Transylvania Short",
+        "video": false,
+        "vote_average": 7.7,
+        "vote_count": 112
+    },
+    {
+        "adult": false,
+        "backdrop_path": "/lkInRiMtLgl9u9xE0By5hqf66K8.jpg",
+        "genre_ids": [
+            27
+        ],
+        "id": 632357,
+        "original_language": "en",
+        "original_title": "The Unholy",
+        "overview": "Alice, a young hearing-impaired girl who, after a supposed visitation from the Virgin Mary, is inexplicably able to hear, speak and heal the sick. As word spreads and people from near and far flock to witness her miracles, a disgraced journalist hoping to revive his career visits the small New England town to investigate. When terrifying events begin to happen all around, he starts to question if these phenomena are the works of the Virgin Mary or something much more sinister.",
+        "popularity": 1120.237,
+        "poster_path": "/b4gYVcl8pParX8AjkN90iQrWrWO.jpg",
+        "release_date": "2021-03-31",
+        "title": "The Unholy",
+        "video": false,
+        "vote_average": 5.6,
+        "vote_count": 87
+    },
+    {
+        "adult": false,
+        "backdrop_path": "/pcDc2WJAYGJTTvRSEIpRZwM3Ola.jpg",
+        "genre_ids": [
+            28,
+            12,
+            14,
+            878
+        ],
+        "id": 791373,
+        "original_language": "en",
+        "original_title": "Zack Snyder's Justice League",
+        "overview": "Determined to ensure Superman's ultimate sacrifice was not in vain, Bruce Wayne aligns forces with Diana Prince with plans to recruit a team of metahumans to protect the world from an approaching threat of catastrophic proportions.",
+        "popularity": 1073.778,
+        "poster_path": "/tnAuB8q5vv7Ax9UAEje5Xi4BXik.jpg",
+        "release_date": "2021-03-18",
+        "title": "Zack Snyder's Justice League",
+        "video": false,
+        "vote_average": 8.5,
+        "vote_count": 5452
+    }
+              ]
           }
         ]
     Movie:
