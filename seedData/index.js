@@ -65,8 +65,8 @@ async function loadGenres() {
 
 if (process.env.seedDb) {
   loadUsers();
-  // loadMovies();
-  // loadGenres();
-  // loadUpcomingMovies();
-  // loadTopRatedMovies();
+  loadMovies();
+  loadGenres();
+  loadUpcomingMovies();
+  loadTopRatedMovies();
 }
